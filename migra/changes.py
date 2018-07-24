@@ -12,6 +12,7 @@ THINGS = [
     "sequences",
     "constraints",
     "functions",
+    "triggers",
     "views",
     "indexes",
     "extensions",

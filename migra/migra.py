@@ -11,7 +11,7 @@ class Migration(object):
     The main class of migra
     """
 
-    def __init__(self, x_from, x_target, schema=None):
+    def __init__(self, x_from, x_target, schema=None, ignore_trailing_function_whitespace=False):
         self.statements = Statements()
         self.changes = Changes(None, None)
         self.schema = schema
@@ -27,6 +27,17 @@ class Migration(object):
             self.changes.i_target = get_inspector(x_target, schema=schema)
             if x_target:
                 self.s_target = x_target
+
+        if ignore_trailing_function_whitespace:
+            self.remove_trailing_function_whitespace()
+
+    def remove_trailing_function_whitespace(self):
+        for v in self.changes.i_from.functions.values():
+            v.definition = v.definition.rstrip()
+        for v in self.changes.i_target.functions.values():
+            v.definition = v.definition.rstrip()
+
+
 
     def inspect_from(self):
         self.changes.i_from = get_inspector(self.s_from, schema=self.schema)

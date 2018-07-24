@@ -47,6 +47,13 @@ def parse_args(args):
         default=False,
         help="Also output privilege differences (ie. grant/revoke statements)",
     )
+    parser.add_argument(
+        "--ignore-trailing-whitespace",
+        dest="ignore_trailing_function_whitespace",
+        action="store_true",
+        default=False,
+        help="Ignore trailing whitespace in functions",
+    )
     parser.add_argument("dburl_from", help="The database you want to migrate.")
     parser.add_argument(
         "dburl_target", help="The database you want to use as the target."
@@ -61,7 +68,7 @@ def run(args, out=None, err=None):
     if not err:
         err = sys.stderr  # pragma: no cover
     with arg_context(args.dburl_from) as ac0, arg_context(args.dburl_target) as ac1:
-        m = Migration(ac0, ac1, schema=schema)
+        m = Migration(ac0, ac1, schema=schema, ignore_trailing_function_whitespace=args.ignore_trailing_function_whitespace)
         if args.unsafe:
             m.set_safety(False)
         if args.create_extensions_only:

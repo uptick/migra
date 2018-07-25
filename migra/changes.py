@@ -17,6 +17,7 @@ THINGS = [
     "indexes",
     "extensions",
     "privileges",
+    "comments",
 ]
 PK = "PRIMARY KEY"
 
